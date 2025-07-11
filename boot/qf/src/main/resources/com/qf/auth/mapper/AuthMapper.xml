@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.auth.mapper.AuthMapper">
+	<select id="validateMemberId" resultType="Integer">
+		select count(member_id) from member where member_id = #{member_id}
+	</select>
+	
+	<insert id="signUp">
+		insert into member (member_id, pw, auth) values (#{member_id}, #{pw}, #{auth})
+	</insert>
+	
+	<select id="login" resultType="Integer">
+		select count(member_id) from member where member_id = #{member_id} and pw = #{pw}
+	</select>
+	
+	<select id="getAuth" resultType="String">
+		select auth from member where member_id = #{member_id}
+	</select>
+	
+	<insert id="insertRefreshToken">
+		insert into refresh_token (token_value, member_id, expiry_date) values (#{token}, #{member_id}, #{expiry_date}) 
+	</insert>
+	
+	<delete id="logout">
+		delete from refresh_token where member_id = #{member_id}
+	</delete>
+	
+	<select id="validateRefreshToken" resultType="Integer">
+		select count(token_value) from refresh_token where token_value = #{token}
+	</select>
+</mapper>
